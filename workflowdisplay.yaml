@@ -1,19 +1,15 @@
-name: template_nextflow_workflow
+name: simple_stats_network_integration_workflow
 displayname: STUFF
 Views:
--   name: Summary List
-    displayname: Summary List
-    viewname: summarylist
-    displaytype: datatable
+-   name: Visualize Network in Browser
+    displayname: Visualize Full Network in Browser
+    viewname: visualizefullnetwork
+    displaytype: linkout
     parameters:
-        filename: output/summary.tsv
-        columns:
-            -   title: "View LCMS"
-                data: filename
-            -   title: "filename"
-                data: filename
-        columnDefs: '[ {"targets": 0,"data": null,"render": function ( data, type, row, meta ) {
-            return `
-            <a target="_blank" href="/dashboards/lcms?usi=mzspec:GNPS2-${task}:${encodeURIComponent(row["filename"])}">View LCMS - mzspec:GNPS2-${task}:${row["filename"]}</a>
-            `;}}]'
-            
+        baseurl: /dashboards/networkviewer
+        urlparam:
+            -   usi:mzdata:GNPS2:TASK-[task]-nf_output/stats_copy/network.graphml
+            -   usi-mgf:mzdata:GNPS2:TASK-[task]-nf_output/stats_copy/specs_ms.mgf
+            -   usi-enrichment:mzdata:GNPS2:TASK-[task]-nf_output/stats/feature_stats.tsv
+            -   usi-enrichment-column-identifier:wilcoxon_log_pvalue
+

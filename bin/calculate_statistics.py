@@ -1,6 +1,7 @@
 import sys
 import argparse
 import pandas as pd
+import numpy as np
 
 def main():
     parser = argparse.ArgumentParser(description='Test write out a file.')
@@ -30,28 +31,52 @@ def main():
         group2_quants = []
 
         for group1_filename in group1_filenames:
-            group1_quants.append(feature_row[group1_filename + " Peak area"])
+            try:
+                group1_quants.append(feature_row[group1_filename + " Peak area"])
+            except:
+                continue
 
         for group2_filename in group2_filenames:
-            group2_quants.append(feature_row[group2_filename + " Peak area"])
+            try:
+                group2_quants.append(feature_row[group2_filename + " Peak area"])
+            except:
+                continue
 
         # calcualte the t-test statistic and wilcoxon statistic
         # and p-value for each feature
+        try:
 
-        import scipy.stats as stats
-        group1_ttest_statistic, group1_p_value = stats.ttest_ind(group1_quants, group2_quants)
+            import scipy.stats as stats
+            ttest_statistic, ttest_pvalue = stats.ttest_ind(group1_quants, group2_quants)
 
-        group2_wilcoxon_statistic, group2_p_value = stats.wilcoxon(group1_quants, group2_quants)
+            wilcoxon_statistic, wilcoxon_pvalue = stats.wilcoxon(group1_quants, group2_quants)
 
-        output_dict = {
-            'feature': feature_row['feature'],
-            'group1_ttest_statistic': group1_ttest_statistic,
-            'group1_p_value': group1_p_value,
-            'group2_wilcoxon_statistic': group2_wilcoxon_statistic,
-            'group2_p_value': group2_p_value
-        }
+            # we shoudl also calculate -log p-value for each test
+            # and add it to the output dict
 
-        output_stats.append(output_dict)
+            # check if the p-value is 0, if so set it to a small value
+            if ttest_pvalue == 0:
+                ttest_pvalue = 1e-10
+            if wilcoxon_pvalue == 0:
+                wilcoxon_pvalue = 1e-10
+
+            # calculate -log p-value
+            ttest_log_pvalue = -1 * np.log10(ttest_pvalue)
+            wilcoxon_log_pvalue = -1 * np.log10(wilcoxon_pvalue)
+
+            output_dict = {
+                'feature': feature_row['feature'],
+                'ttest_pvalue': ttest_pvalue,
+                'ttest_log_pvalue': ttest_log_pvalue,
+                'ttest_statistic': ttest_statistic,
+                'wilcoxon_pvalue': wilcoxon_pvalue,
+                'wilcoxon_log_pvalue': wilcoxon_log_pvalue,
+                'wilcoxon_statistic': wilcoxon_statistic,
+            }
+
+            output_stats.append(output_dict)
+        except:
+            pass
 
     # write out the output stats to a file
     output_df = pd.DataFrame(output_stats)
