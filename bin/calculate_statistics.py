@@ -42,14 +42,14 @@ def main():
             except:
                 continue
 
-        # calcualte the t-test statistic and wilcoxon statistic
+        # calcualte the t-test statistic and mannwhitney statistic
         # and p-value for each feature
         try:
 
             import scipy.stats as stats
             ttest_statistic, ttest_pvalue = stats.ttest_ind(group1_quants, group2_quants)
 
-            wilcoxon_statistic, wilcoxon_pvalue = stats.wilcoxon(group1_quants, group2_quants)
+            mannwhitney_statistic, mannwhitney_pvalue = stats.mannwhitneyu(group1_quants, group2_quants)
 
             # we shoudl also calculate -log p-value for each test
             # and add it to the output dict
@@ -57,26 +57,26 @@ def main():
             # check if the p-value is 0, if so set it to a small value
             if ttest_pvalue == 0:
                 ttest_pvalue = 1e-10
-            if wilcoxon_pvalue == 0:
-                wilcoxon_pvalue = 1e-10
+            if mannwhitney_pvalue == 0:
+                mannwhitney_pvalue = 1e-10
 
             # calculate -log p-value
             ttest_log_pvalue = -1 * np.log10(ttest_pvalue)
-            wilcoxon_log_pvalue = -1 * np.log10(wilcoxon_pvalue)
+            mannwhitney_log_pvalue = -1 * np.log10(mannwhitney_pvalue)
 
             output_dict = {
                 'feature': feature_row['feature'],
                 'ttest_pvalue': ttest_pvalue,
                 'ttest_log_pvalue': ttest_log_pvalue,
                 'ttest_statistic': ttest_statistic,
-                'wilcoxon_pvalue': wilcoxon_pvalue,
-                'wilcoxon_log_pvalue': wilcoxon_log_pvalue,
-                'wilcoxon_statistic': wilcoxon_statistic,
+                'mannwhitney_pvalue': mannwhitney_pvalue,
+                'mannwhitney_log_pvalue': mannwhitney_log_pvalue,
+                'mannwhitney_statistic': mannwhitney_statistic,
             }
 
             output_stats.append(output_dict)
         except:
-            pass
+            raise
 
     # write out the output stats to a file
     output_df = pd.DataFrame(output_stats)
