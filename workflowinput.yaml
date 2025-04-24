@@ -1,7 +1,7 @@
 workflowname: simple_stats_network_integration_workflow
 workflowdescription: simple_stats_network_integration_workflow
 workflowlongdescription: This is a simple_stats_network_integration_workflow for GNPS2
-workflowversion: "0.1"
+workflowversion: "2025.04.24"
 workflowfile: nf_workflow.nf
 workflowautohide: false
 adminonly: false
