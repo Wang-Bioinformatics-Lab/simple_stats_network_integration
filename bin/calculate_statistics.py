@@ -65,7 +65,7 @@ def main():
             mannwhitney_log_pvalue = -1 * np.log10(mannwhitney_pvalue)
 
             output_dict = {
-                'feature': feature_row['feature'],
+                'feature': feature_row['row ID'],
                 'ttest_pvalue': ttest_pvalue,
                 'ttest_log_pvalue': ttest_log_pvalue,
                 'ttest_statistic': ttest_statistic,
@@ -76,7 +76,7 @@ def main():
 
             output_stats.append(output_dict)
         except:
-            raise
+            pass
 
     # write out the output stats to a file
     output_df = pd.DataFrame(output_stats)
