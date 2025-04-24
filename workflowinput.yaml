@@ -1,6 +1,6 @@
-workflowname: template_nextflow_workflow
-workflowdescription: template_nextflow_workflow
-workflowlongdescription: This is a template nextflow workflow for GNPS2
+workflowname: simple_stats_network_integration_workflow
+workflowdescription: simple_stats_network_integration_workflow
+workflowlongdescription: This is a simple_stats_network_integration_workflow for GNPS2
 workflowversion: "0.1"
 workflowfile: nf_workflow.nf
 workflowautohide: false
@@ -10,12 +10,66 @@ parameterlist:
     - displayname: File Selection
       paramtype: section
 
-    - displayname: Input Data Folder
+    - displayname: Input MGF File
       paramtype: fileselector
-      nf_paramname: input_spectra
+      nf_paramname: input_mgf
       formplaceholder: Enter the path to data
       formvalue: ""
-      targettaskfolder: input_spectra
+      targettaskfolder: input_mgf
       optional: false
-      selectsinglefile: false
+      selectsinglefile: true
       folderunroll: true
+
+    - displayname: Input GraphML File
+      paramtype: fileselector
+      nf_paramname: input_graphml
+      formplaceholder: Enter the path to data
+      formvalue: ""
+      targettaskfolder: input_graphml
+      optional: false
+      selectsinglefile: true
+      folderunroll: true
+
+    - displayname: Input Feature File
+      paramtype: fileselector
+      nf_paramname: input_feature
+      formplaceholder: Enter the path to data
+      formvalue: ""
+      targettaskfolder: input_feature
+      optional: false
+      selectsinglefile: true
+      folderunroll: true
+
+    - displayname: Input Metadata File
+      paramtype: fileselector
+      nf_paramname: input_metadata
+      formplaceholder: Enter the path to data
+      formvalue: ""
+      targettaskfolder: input_metadata
+      optional: false
+      selectsinglefile: true
+      folderunroll: true
+
+    - displayname: Stats Options
+      paramtype: section
+
+    - displayname: Attribute Column
+      paramtype: text
+      nf_paramname: metadata_attribute
+      formplaceholder: metadata_attribute
+      formvalue: ""
+      tooltip: "Lorem Ipsum"
+
+    - displayname: metadata_group1
+      paramtype: text
+      nf_paramname: metadata_group1
+      formplaceholder: metadata_group1
+      formvalue: ""
+      tooltip: "Lorem Ipsum"
+
+    - displayname: metadata_group1
+      paramtype: text
+      nf_paramname: metadata_group2
+      formplaceholder: metadata_group2
+      formvalue: ""
+      tooltip: "Lorem Ipsum"
